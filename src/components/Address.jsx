@@ -1,8 +1,12 @@
 import { Steps } from 'antd';
 import { useAddress } from '../features/authentication/useLogin';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Spinner from './Spinner';
+import toast from 'react-hot-toast';
+import { MyContext } from '../context/payContext';
+import { useMakeOrder } from '../features/orders/useOrder';
+import { useSelector } from 'react-redux';
 
 const HomeAdd = [
   'Friends Mens Pg, Opp. Apama Shangi-la Street, No.3, Ploat No. 22, Padmasree Gardens, Gowlidoddy, Gachibowli, Hyderabad, TELANGANA - 50032 India.',
@@ -49,8 +53,12 @@ const Address = ({totalPrice}) => {
   const [step, setStep] = useState(1); // Move useState inside the component
   const [showAddress, setshowAddress] = useState(true)
   const {isLoading, isError, data, error} = useAddress();
+  const  {order, loading} = useMakeOrder()
   const [address, setaddress] = useState({})
-  console.log(data);
+  const {setpay} = useContext(MyContext)
+  // @ts-ignore
+  const products = useSelector(state=>state.cart);
+
   const {user} = data
   
   const handleClick = () => {
@@ -59,7 +67,27 @@ const Address = ({totalPrice}) => {
     setshowAddress(false)
     setaddress(user?.addressInfo)
   };
+  const handlePay = ()=>{
+    setStep(2)
+    setpay(true)
+    order(
+      {
+      shipingInfo: address,
+      paymentInfo: {
+        id:1,
+        status:"success",
+      },
+      taxPrice: 0,
+      shipingPrice: 0,
+      totalPrice: totalPrice,
+      orderItems: products
+    })
+  }
+console.log(isError);
 
+  if(isError){
+    toast.error(error['message']);
+  }
   if(isLoading){
     return <Spinner/>
   }
@@ -103,7 +131,7 @@ const Address = ({totalPrice}) => {
         </div>}
       {!showAddress && <div>
         <p>Payment Gateway</p>
-        <SuccessBtn onClick={handleClick}>Pay {totalPrice} </SuccessBtn>
+        <SuccessBtn onClick={handlePay}>Pay {totalPrice} </SuccessBtn>
         </div>}
     </Wrapper>
   );

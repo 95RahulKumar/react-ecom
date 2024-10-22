@@ -15,7 +15,7 @@ const Heading = styled.span`
    margin-bottom: 15px;
    background: #fff;
    padding: 5px 10px;
-
+   
 `
 
 const Products = () => {

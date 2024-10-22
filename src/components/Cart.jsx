@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import PriceDetail from './PriceDetail'
 import EmptyCart from './EmptyCart'
 import Address from './Address'
+import { ContextProvider } from '../context/payContext'
 const CartWrapper = styled.div`
     display: grid;
     width: 100%;
@@ -36,6 +37,7 @@ const Cart = () => {
     }
   return (
    <>
+   <ContextProvider>
    <CartWrapper>
    { !hideOrderDetails &&
     <div>
@@ -50,7 +52,7 @@ const Cart = () => {
    {hideOrderDetails && <Address totalPrice={totalPrice}/>}
   <PriceDetail  handlePlaceOrder={handlePlaceOrder}/>
    </CartWrapper>
-   
+   </ContextProvider>
    </>
   )
 }

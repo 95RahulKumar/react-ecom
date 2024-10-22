@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CartWrapper } from './CartItem'
 import styled from 'styled-components'
 import { useSelector } from 'react-redux'
 import { getCount, getTotalPrice } from '../store/cartSlice'
 import { BiSolidOffer } from "react-icons/bi";
 import { Modal } from 'antd'
+import { MyContext } from '../context/payContext'
 
 const PriceDetailse = styled.span`
     border-bottom: 1px dashed #625c5c;
@@ -68,6 +69,7 @@ const PriceDetail = ({handlePlaceOrder}) => {
    const [timeline, settimeline] = useState(false)
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [appliedCode, setappliedCode] = useState(false)
+   const {pay} = useContext(MyContext)
    const prodCount =  useSelector(getCount)
    const plateformFee = 3;
    const descount = 0
@@ -112,8 +114,8 @@ const PriceDetail = ({handlePlaceOrder}) => {
         <Modal title={'Apply Code HYD15'} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Code> <p style={{fontSize:'15px',marginLeft:'5px'}} >Code HYD10</p></Code>
           </Modal>
-      {!timeline &&<SuccessBtn onClick={()=>handleClick(total)}>Place Order</SuccessBtn>}
-      {timeline && <SuccessBtn onClick={handleClick}>Continue</SuccessBtn>}
+      {!timeline && !pay &&<SuccessBtn onClick={()=>handleClick(total)}>Place Order</SuccessBtn>}
+      {timeline && !pay && <SuccessBtn onClick={handleClick}>Continue</SuccessBtn>}
     </CartWrapper>
   )
 }

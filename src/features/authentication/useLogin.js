@@ -28,7 +28,7 @@ export function useAddress(){
     queryKey: ['todos'],
     queryFn: fetchProfile,
   })
-
+console.log(isLoading, isError, data, error)
   return { isLoading, isError, data, error}
 }
 
@@ -43,6 +43,6 @@ export function useAddress(){
     })
 
     const res = await data.json();
-    if(res.success= false)throw new Error(res.message);
+    if(res.success == false) throw new Error(res.message);
     return res;
 }
