@@ -1,6 +1,8 @@
 import { Steps } from 'antd';
+import { useAddress } from '../features/authentication/useLogin';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import Spinner from './Spinner';
 
 const HomeAdd = [
   'Friends Mens Pg, Opp. Apama Shangi-la Street, No.3, Ploat No. 22, Padmasree Gardens, Gowlidoddy, Gachibowli, Hyderabad, TELANGANA - 50032 India.',
@@ -43,16 +45,24 @@ const SuccessBtn = styled.button`
   outline: none;
 `;
 
-const Address = () => {
+const Address = ({totalPrice}) => {
   const [step, setStep] = useState(1); // Move useState inside the component
   const [showAddress, setshowAddress] = useState(true)
-
+  const {isLoading, isError, data, error} = useAddress();
+  const [address, setaddress] = useState({})
+  console.log(data);
+  const {user} = data
+  
   const handleClick = () => {
     // Add functionality here
     setStep(2)
     setshowAddress(false)
+    setaddress(user?.addressInfo)
   };
 
+  if(isLoading){
+    return <Spinner/>
+  }
   return (
     <Wrapper>
       <Steps
@@ -76,13 +86,25 @@ const Address = () => {
 
        {showAddress && <div>
         <Home>Home</Home>
-            {HomeAdd.map((add, index) => (
+            {/* {HomeAdd.map((add, index) => (
                 <AddressWrapper key={index}>{add}</AddressWrapper> // Add unique key
             ))}
-            <p>Mobile no.: 88XXXXXX16</p>
+            <p>Mobile no.: 88XXXXXX16</p> */}
+             <AddressWrapper>
+             <span>{user?.addressInfo?.address}</span>,
+            <span>{user?.addressInfo?.city}</span>,
+            <span>{user?.addressInfo?.state}</span>,
+            <span>{user?.addressInfo?.country}</span>,
+            <span>{user?.addressInfo?.pincode}</span>
+             </AddressWrapper>
+         
+            <p>phone no :{user?.addressInfo?.phoneNumber}</p>
             <SuccessBtn onClick={handleClick}>Use This Address</SuccessBtn>
         </div>}
-      {!showAddress && <p>Payment Gateway</p>}
+      {!showAddress && <div>
+        <p>Payment Gateway</p>
+        <SuccessBtn onClick={handleClick}>Pay {totalPrice} </SuccessBtn>
+        </div>}
     </Wrapper>
   );
 };

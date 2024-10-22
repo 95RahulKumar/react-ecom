@@ -73,6 +73,7 @@ const PriceDetail = ({handlePlaceOrder}) => {
    const descount = 0
    const deliveryStr = 'free'
    const deliveryCharge = deliveryStr == 'free'?0:30
+   const total = totalPrice+plateformFee-descount+deliveryCharge-offer
    const showModal = () => {
     setIsModalOpen(true);
   };
@@ -86,8 +87,8 @@ const PriceDetail = ({handlePlaceOrder}) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const handleClick = ()=> {
-    handlePlaceOrder()
+  const handleClick = (total)=> {
+    handlePlaceOrder(total)
     settimeline(true)
   }
   return (
@@ -107,11 +108,11 @@ const PriceDetail = ({handlePlaceOrder}) => {
         <StyledSpan>Discount:<span style={{fontWeight:'600'}}> {descount}</span></StyledSpan>
         <StyledSpan>Delivery Charges: <span style={{fontWeight:'600'}}>{deliveryCharge}</span></StyledSpan>
         <BorderDashed/>
-        <TotalAmount>Total Amount: {totalPrice+plateformFee-descount+deliveryCharge-offer}</TotalAmount>
+        <TotalAmount>Total Amount: {total}</TotalAmount>
         <Modal title={'Apply Code HYD15'} open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <Code> <p style={{fontSize:'15px',marginLeft:'5px'}} >Code HYD10</p></Code>
           </Modal>
-      {!timeline &&<SuccessBtn onClick={handleClick}>Place Order</SuccessBtn>}
+      {!timeline &&<SuccessBtn onClick={()=>handleClick(total)}>Place Order</SuccessBtn>}
       {timeline && <SuccessBtn onClick={handleClick}>Continue</SuccessBtn>}
     </CartWrapper>
   )

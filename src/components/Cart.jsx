@@ -23,13 +23,15 @@ const OfferDes = styled.p`
 `
 const Cart = () => {
   const [hideOrderDetails, setHideOrderDetails] = useState(false)
+  const [totalPrice, settotalPrice] = useState(null)
     // @ts-ignore
     const products = useSelector(state=>state.cart);
     if(products.length == 0){
         return  <EmptyCart text={'Your cart is empty!'}/>
     }
 
-    const handlePlaceOrder=()=>{
+    const handlePlaceOrder=(price)=>{
+      settotalPrice(price)
       setHideOrderDetails(true)
     }
   return (
@@ -45,7 +47,7 @@ const Cart = () => {
     </div>
    } 
 
-   {hideOrderDetails && <Address/>}
+   {hideOrderDetails && <Address totalPrice={totalPrice}/>}
   <PriceDetail  handlePlaceOrder={handlePlaceOrder}/>
    </CartWrapper>
    
