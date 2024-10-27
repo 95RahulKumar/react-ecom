@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import Cart from '../../components/Cart'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import Heading from '../../components/Heading'
 const LayoutWrapper = styled.div`
   display:flex ;
   flex-direction: column;
@@ -15,6 +16,7 @@ const CartLayout = () => {
    console.log(cart)
   return (
     <>
+    <Heading>Cart</Heading>
     <LayoutWrapper>
     <Cart/>
     </LayoutWrapper>

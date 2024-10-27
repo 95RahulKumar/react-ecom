@@ -5,18 +5,11 @@ import Spinner from '../../components/Spinner'
 import ErrorFallback from '../../components/ErrorFallback'
 import Order from '../../components/Order'
 import styled from 'styled-components'
-
-const Heading = styled.span`
-   font-size:15px;
-   font-weight: 600;
-   margin-bottom: 15px;
-   background: #fff;
-   padding: 5px 10px;
-`
+import Heading from '../../components/Heading'
 const Orders = () => {
   const {data , isError, isLoading,error} = useOrder();
 
-  const {orders}  = data 
+  const orders = data?.orders || [];
  if(isLoading){
   return <Spinner />;
  }

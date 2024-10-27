@@ -23,7 +23,7 @@ const SideBar = () => {
   return (
 <Vertical>
 <AvatarStyled />
-      <Avatar size={96} icon={<UserOutlined />} />
+      <Avatar size={96} style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />}/>
       <MainNav/>
 
 </Vertical>

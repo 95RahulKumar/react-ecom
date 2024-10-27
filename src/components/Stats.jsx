@@ -6,16 +6,54 @@ import {
   } from "react-icons/hi2";
   import Stat from "./Stat";
 import styled from "styled-components";
+import { useOrders, useProducts, useUsers } from "../services/user";
+import Loader from "./Loader";
   
   function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
+    const {isLoading, isError, data, error} = useUsers();
+    const {isLoading:orderLoading, isError:OrderError, data:orders} = useOrders();
+    const {isLoading:productLoading, isError:productError, data:products} =useProducts()
+    console.log(orders?.orders)
+    const users = []
+    const ordersPloatData = [];
+    const productPloatData = [];
+    data?.users?.forEach(element => {
+     let obj = {
+      x:element?.createdAt,
+      y:element?.gender
+     }
+     users.push(obj)
+    });
+     
+    const items = products?.analiticsData?.product_name
+    const stock = products?.analiticsData?.stock;
+
+    items?.forEach((element,index) => {
+      let obj = {
+        x:element,
+        y:stock[index]
+       }
+       productPloatData.push(obj)
+    });
+
+    if(isLoading || orderLoading || productLoading){
+    return <Loader content={'Loading....'}/>
+    }
+    orders?.orders?.forEach(element => {
+      let obj = {
+       x:element?.paidAt,
+       y:element?.totalPrice
+      }
+      ordersPloatData.push(obj)
+     });
     // 1.
-    const numBookings = 5000
+    const numOfUsers = data?.users?.length
   
     // 2.
-    const sales = 10000
+    const orderlength = orders?.orders?.length
   
     // 3.
-    const checkins = 3000;
+    const itemsLength = productPloatData?.length;
   
     // 4.
     const occupation = 60;
@@ -23,7 +61,7 @@ import styled from "styled-components";
    const StyledStates = styled.div`
     width: 100%; /* or a specific width */
     display: grid;
-    grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
     gap: 10px;
    `
     return (
@@ -31,28 +69,25 @@ import styled from "styled-components";
  <StyledStates>
 
         <Stat
-          title="Bookings"
+          title="Total Users"
           color="blue"
+          total = {numOfUsers}
           icon={<HiOutlineBriefcase />}
-          value={numBookings}
+          value={users}
         />
         <Stat
-          title="Sales"
-          color="green"
+          title="Total Orders"
+          color="red"
+          total={orderlength}
           icon={<HiOutlineBanknotes />}
-          value={sales}
+          value={ordersPloatData}
         />
         <Stat
-          title="Check ins"
-          color="indigo"
+          title="Total Products"
+          color="green"
           icon={<HiOutlineCalendarDays />}
-          value={checkins}
-        />
-        <Stat
-          title="Occupancy rate"
-          color="yellow"
-          icon={<HiOutlineChartBar />}
-          value={Math.round(occupation) + "%"}
+          total={itemsLength}
+          value={productPloatData}
         />
             
  </StyledStates>

@@ -1,10 +1,9 @@
 import React from 'react'
-import { HiOutlineCalendarDays, HiOutlineCog6Tooth, HiOutlineHome, HiOutlineHomeModern, HiOutlineUsers } from 'react-icons/hi2';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { AiFillProduct } from "react-icons/ai";
-import { HiOutlineShoppingCart } from "react-icons/hi";
 import { MdBookmarkBorder } from "react-icons/md";
+import { IoCreateOutline } from "react-icons/io5";
+import { HomeOutlined, ProductOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 const StyledNav = styled.nav`
     width:100%;
@@ -38,8 +37,9 @@ const StyledNavLink = styled(NavLink)`
   &.active:link,
   &.active:visited {
     color: var(--color-grey-800);
-    background-color: var(--color-grey-100);
-    border-radius: var(--border-radius-sm);
+    background-color: #14ff142b;
+    padding: 1rem 2.3rem;
+    border-radius: 60px;
   }
 
   & svg {
@@ -62,19 +62,19 @@ const MainNav = () => {
     <NavList>
       <li>
         <StyledNavLink to="/dashboard">
-          <HiOutlineHome />
+        <HomeOutlined />
           <span>Dashboard</span>
         </StyledNavLink>
       </li>
       <li>
         <StyledNavLink to="/products">
-        <AiFillProduct />
+        <ProductOutlined />
           <span>Products</span>
         </StyledNavLink>
       </li>
       <li>
         <StyledNavLink to="/cart">
-        <HiOutlineShoppingCart />
+        <ShoppingCartOutlined />
           <span>Cart</span>
         </StyledNavLink>
       </li>
@@ -85,9 +85,9 @@ const MainNav = () => {
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/settings">
-          <HiOutlineCog6Tooth />
-          <span>Settings</span>
+        <StyledNavLink to="/create">
+        <IoCreateOutline />
+          <span>Create Products</span>
         </StyledNavLink>
       </li>
     </NavList>

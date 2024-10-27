@@ -1,56 +1,81 @@
 import { useState } from "react";
-import Form from '../../components/Form'
-import Input from "../../components/Input";
-import Button from "../../components/Button";
 import FormRowVertical from "../../components/FormRowVertical";
 import styled from "styled-components";
 import { useLogin } from "./useLogin";
+import { Button, Card, Checkbox, Form, Input, Switch } from 'antd';
+import Loader from "../../components/Loader";
+
 const MarginTop = styled.form`
  margin-top: 10px;
  width: 100%;
  height:10px;
 `;
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const  {login,isLoading} = useLogin();
-console.log(login)
-  function handleSubmit(e) {
 
-    e.preventDefault();
-    // @ts-ignore
+  const onFinish = (values) => {
+    const {email,password} = values
     login({email,password})
-  }
+  };
+  
+  const onFinishFailed = (errorInfo) => {
+    console.error('Failed:', errorInfo);
+  };
+
+  if(isLoading){
+  return <Loader content={'Loading....'}/>
+  }  
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRowVertical label="Email address">
-        <Input
-          type="email"
-          id="email"
-          // This makes this form better for password managers
-          autoComplete="username"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </FormRowVertical>
+    <Form
+    name="basic"
+    labelCol={{ span: 8}}
+    wrapperCol={{ span: 16 }}
+  autoCorrect="off"
+    initialValues={{ remember: true }}
+    onFinish={onFinish}
+    onFinishFailed={onFinishFailed}
+    autoComplete="off"
+   
+  >
 
-      <FormRowVertical label="Password">
-        <Input
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </FormRowVertical>
-    <MarginTop/>
-    <Button  >
-          Login
-        </Button>
-  
-     
-    </Form>
+    <Form.Item
+      label="email"
+      name="email"
+      rules={[
+        { required: true, message: 'Please enter your email' },
+        { 
+          pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, 
+          message: 'Please enter a valid email address' 
+        }
+      
+      ]}
+      hasFeedback
+    >
+      <Input type="email" autoFocus />
+    </Form.Item>
+
+    <Form.Item
+      label="Password"
+      name="password"
+
+      rules={[{ required: true, message: 'Please input your password!' },
+        {min:8,
+          message: 'password should be at least 8 char long'
+        }
+      ]}
+      hasFeedback
+    >
+      <Input.Password />
+    </Form.Item>
+    <Form.Item
+    wrapperCol={{ span: 24 }}  >
+      <Button type="primary" style={{marginTop:'10px'}} block htmlType="submit">
+        Submit
+      </Button>
+    </Form.Item>
+
+  </Form>
   );
 }
 

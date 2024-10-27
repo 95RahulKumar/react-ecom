@@ -14,9 +14,13 @@ import ProductsLayout from './features/products/ProductsLayout'
 import CartLayout from './features/cart/CartLayout'
 import ProductDetails from './components/ProductDetails'
 import Orders from './features/orders/Orders'
+import CreateOrder from './components/CreateProduct'
+import CreateProduct from './components/CreateProduct'
 const queryClient = new QueryClient({
-  queries: {
-    refetchOnWindowFocus: false, // Disable refetching on window focus
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, 
+    },
   },
 })
 
@@ -40,6 +44,7 @@ function App() {
       <Route path='cart' element={<CartLayout/>}></Route>
       <Route path='orders' element={<Orders/>}></Route>
       <Route path='products/:id' element={<ProductDetails/>}></Route>
+      <Route path='create' element={<CreateProduct/>}></Route>
       </Route>  
       <Route path='login' element={<Login/>}></Route>
       <Route path="*" element={<PageNotFound/>}></Route>

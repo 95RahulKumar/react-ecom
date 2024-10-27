@@ -1,3 +1,5 @@
+import { getItem } from "../utils/healper";
+
 export async function products() {
     const data = await fetch('http://localhost:3000/api/products', {
         method: 'GET',
@@ -25,4 +27,28 @@ export async function productById(id) {
    if (res.success==false) throw new Error(res.message);
   
    return res;
+}
+
+export async function createOrder({name,price,description,category,stock,file, }){
+    const token = getItem('token')
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('category', category);
+    formData.append('stock', stock);
+    if (file) {
+        formData.append('image', file);
+    }
+    const data = await fetch('http://localhost:3000/api/products/new',{
+        method:'POST',
+        headers:{
+        
+             'Authorization': `Bearer ${token}`
+        },
+        body:formData,
+    })
+    const res = await data.json()
+    if (res.success==false) throw new Error(res.message);
+    return res; 
 }

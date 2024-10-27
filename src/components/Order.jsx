@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from './Image'
 import { FiDelete } from 'react-icons/fi'
+import { format } from 'date-fns'
 
 
 const Wrapper = styled.div`
@@ -12,6 +13,13 @@ const Wrapper = styled.div`
 const CreatedAt = styled.span`
     text-align: center;
     margin: 10px 0;
+    padding: 3px 6px;
+    font-size: 15px;
+    color: green;
+    border-radius: 5px;
+    background: #0080004e;
+    width: max-content;
+    text-align: center;
 `
 
 export const CartWrapper= styled.div`
@@ -57,7 +65,7 @@ const Order = ({order}) => {
   return (
     <Wrapper>
     
-    <CreatedAt>-------{order?.createdAt}--------------</CreatedAt>
+    <CreatedAt> On {format(new Date(order?.createdAt), "MM/dd/yyyy")}</CreatedAt>   
     {order?.orderItems?.map(product=>(
 
 <CartWrapper key={product?._id}>

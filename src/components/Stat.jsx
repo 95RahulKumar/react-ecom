@@ -1,3 +1,4 @@
+import { Area, Line } from "@ant-design/plots";
 import styled from "styled-components";
 
 const StyledStat = styled.div`
@@ -7,9 +8,9 @@ const StyledStat = styled.div`
   border-radius: var(--border-radius-md);
 
   padding: 1.6rem;
-  display: grid;
-  grid-template-columns: 6.4rem 1fr;
-  grid-template-rows: auto auto;
+  display: flex;
+justify-content:space-around;
+align-items: center;
   column-gap: 1.6rem;
   row-gap: 0.4rem;
 `;
@@ -41,18 +42,62 @@ const Title = styled.h5`
   color: var(--color-grey-500);
 `;
 
+const DataStyled = styled.div`
+  width: max-content;
+`
 const Value = styled.p`
   font-size: 2.4rem;
   line-height: 1;
-  font-weight: 500;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 0.3rem;
 `;
+function Stat({ icon, title, value, color,total}) {
 
-function Stat({ icon, title, value, color }) {
+  const config = {
+    data:value,
+    xField:'x',
+    yField:'y',
+    appendPadding: [1, 0, 0, 0],
+    padding: 0,
+    syncViewPadding: true,
+    autofit: true,
+    animation:false,
+    tooltip: false,
+    smooth: true,
+    xAxis:false,
+    line:{
+      color:color
+    },
+    areaStyle: () => {
+      return {
+        fill: color
+      };
+    },
+    yAxis: {
+      tickCount: 12,
+      label: {
+        style: {
+          stroke: 'transparent' 
+        }
+      },
+      grid: {
+        line: {
+          style: {
+            stroke: 'transparent', 
+          },
+        },
+      },
+     
+    },
+  };
   return (
     <StyledStat>
-      <Icon color={color}>{icon}</Icon>
-       <Title>{title}</Title>
-      <Value>{value}</Value>
+      <DataStyled>
+      <Title>{title}</Title>
+      <Value>{total}</Value>
+      </DataStyled>
+      <Area {...config} style={{width:'180px',height:'50px'}} />
     </StyledStat>
   );
 }

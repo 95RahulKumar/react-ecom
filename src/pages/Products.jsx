@@ -3,19 +3,12 @@ import Product from '../components/Product'
 import Spinner from '../components/Spinner'
 import { useFetchProducts } from '../features/products/useProducts'
 import React from 'react'
+import Heading from '../components/Heading'
 
 const StyledContainer = styled.ul`
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
     gap:1rem;
-`
-const Heading = styled.span`
-   font-size:15px;
-   font-weight: 600;
-   margin-bottom: 15px;
-   background: #fff;
-   padding: 5px 10px;
-   
 `
 
 const Products = () => {
