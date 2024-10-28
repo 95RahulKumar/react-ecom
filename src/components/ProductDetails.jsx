@@ -2,7 +2,7 @@ import { useFetchProductById } from '../features/products/useProducts'
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Spinner from './Spinner'
-import { Card, Progress } from 'antd'
+import { Button, Card, Progress } from 'antd'
 import Meta from 'antd/es/card/Meta'
 import styled from 'styled-components'
 import { IoArrowBackCircleOutline } from "react-icons/io5";
@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { add, getQuantityByID } from '../store/cartSlice';
 import { BsCartPlus } from "react-icons/bs";
 import { IoCart } from "react-icons/io5";
+import { Typography } from 'antd';
 
+const { Text,Title } = Typography;
 
 const DetailWrapper = styled.div`
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns:1fr;
 `
 const FillCartIcon = styled(IoCart)`
    font-size: 20px;
@@ -22,24 +24,14 @@ const FillCartIcon = styled(IoCart)`
 
 const BackIcon = styled(IoArrowBackCircleOutline)`
     font-size: 30px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     cursor:'pointer';
+    background: #ffffff;
+    border-radius: 50%;
 `
-const ReviewS = styled.span`
-    color: #ff00005b;
-`
-const Stock = styled.span`
-    padding:5px 10px;
-    background: green;
-    color: #fff;
-    display: flex;
-    font-weight:600;
-    justify-content: center;
-    margin-top: 10px;
-    width: max-content;
-`
+
 const StyledIcon = styled(BsCartPlus)`
-    color: #0080004a;
+    color: #000;
     width: 24px;
     height: 24px;
     cursor: pointer;
@@ -47,21 +39,6 @@ const StyledIcon = styled(BsCartPlus)`
     top:15px;
     right:14px;
     z-index: 100;
-`
-
-const CartBtn = styled.button`
-    border: none;
-    outline: none;
-    padding:5px 10px;
-    background: green;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    bottom: 15px;
-    left: 15px;
-    z-index:100;
 `
 
 const ProductDetails = () => {
@@ -94,34 +71,36 @@ const ProductDetails = () => {
 
   return (
     <>
-    
     <BackIcon onClick={handleGoBack}/>
     <DetailWrapper>
     <Card
-    bordered={true} 
-    style={{
-        boxShadow:'rgba(0, 0, 0, 0.16) 0px 1px 4px;',
-        marginRight:'10px'
-     }}
-    cover={<img alt="example" src={productObj?.image[0]?.url} />}
-  >
-    {/* <Meta title={productObj?.name} description={productObj?.description} /> */}
+  > 
+  <img alt="example"  style={{height:'200px'}} src={productObj?.image[0]?.url} />
+  
         {quantity<1 && productObj?.stock>0 && <StyledIcon onClick={() =>handleClick(productObj) } />}
-        {quantity>=1 && <CartBtn onClick={() =>navigate('/cart') }> <FillCartIcon /> <span style={{marginLeft:'5px'}}>Go to Cart</span></CartBtn>}
-  </Card>
-  <Card bordered={true} >
+
+        {quantity>=1 &&<Button onClick={() =>navigate('/cart') } style={{marginLeft:'5px', position:'absolute', top:'10px',right:'10px'}} icon={ <FillCartIcon />} type="primary">Go to Cart</Button>}
+        
+        <Card >
+
   <Meta title={productObj?.name}  description={productObj?.description} />
-  {!productObj?.numOfReviews && <ReviewS>No Reviews Found</ReviewS>}
-  <p>Rp. {productObj?.price}</p>
-  <Stock style={productObj?.stock>0 ?{}:{ background:'#eee',color:'#777575'}}>{productObj?.stock>0 ? 'In Stock':'Currently Unavailable'}</Stock>
+
+  {!productObj?.numOfReviews &&  <Text type="secondary" style={{color:'#ff00005b'}}>No Reviews Found</Text>}
+
+  <Title level={5} style={{marginTop:'10px'}}>Rp. {productObj?.price}</Title>
+
+  <Button disabled={productObj?.stock==0} style={{marginTop:'10px',cursor:'auto',pointerEvents:'none'}} >{productObj?.stock>0?'In Stock':'Out of Stock'}</Button>
+
   { productObj?.numOfReviews>0 ?
    <span>
-     <p style={{marginTop:'10px'}}>Ratings</p>
+
+     <Title level={5} style={{marginTop:'10px'}}>Ratings</Title>
+
      <Progress style={{marginTop:'10px'}} percent={getProgress(productObj?.reviews)} success={{ percent: getProgress(productObj?.reviews) }} type="circle" />
      {productObj?.reviews.map(item=>(
         <div style={{marginTop:'10px'}}>
-        <p>By: {item?.name}</p>
-        <p>comments: {item?.comment}</p>
+           <Title level={5}>By: {item?.name}</Title>
+           <Text type="secondary">comments: {item?.comment}</Text>
         </div>
        
         ))}
@@ -129,6 +108,9 @@ const ProductDetails = () => {
   }
  
   </Card>
+
+  </Card>
+ 
     </DetailWrapper>
   
     </>

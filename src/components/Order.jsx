@@ -1,25 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import Image from './Image'
-import { FiDelete } from 'react-icons/fi'
 import { format } from 'date-fns'
+import { Card, Flex } from 'antd'
+import { Typography } from 'antd';
+
+const { Text,Title } = Typography;
 
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-`
-
-const CreatedAt = styled.span`
-    text-align: center;
-    margin: 10px 0;
-    padding: 3px 6px;
-    font-size: 15px;
-    color: green;
-    border-radius: 5px;
-    background: #0080004e;
-    width: max-content;
-    text-align: center;
 `
 
 export const CartWrapper= styled.div`
@@ -34,72 +25,32 @@ position: relative;
 `
 
 
-const CartDes= styled.div`
-padding:10px 24px 24px;
-`
-const CartName = styled.span`
-    font-size:16px; 
-    color:#212121;
-`
-const ItemPrice = styled.span`
-    font-size:18px; 
-    color:#212121;
-    font-weight: 600;
-    display: block;
-`
-const ItemReview = styled.p`
-    font-size:14px; 
-    color:green;
-    font-weight: 600;
-`
-const StyledDelete = styled(FiDelete)`
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size:20px;
-    color: red;
-`
+
 
 
 const Order = ({order}) => {
   return (
     <Wrapper>
-    
-    <CreatedAt> On {format(new Date(order?.createdAt), "MM/dd/yyyy")}</CreatedAt>   
+       
     {order?.orderItems?.map(product=>(
 
-<CartWrapper key={product?._id}>
-<Image image={product?.image?.[0]?.url} width={'112px'} height={'112px'}/>
-<CartDes>
-<CartName>{product.name}</CartName>
-<ItemPrice>Rp. {product?.price}</ItemPrice>
-<p 
-style={order?.orderStatus !== 'Proccessing' ? {
-    background:'green',
-    border:' 1px solid var(--color-grey-100)',
-    padding:'2px 10px',
-    color:'var(--color-grey-100)',
-    fontSize:'15px',
-    borderRadius:'5px',
-    display:'block',
-    maxWidth:'max-content',
-    margin:'5px 0'
-    } : {
-        background:'orange',  
-        border:' 1px solid var #1f2937',
-        padding:'2px 10px',
-        color:'#444',
-        fontSize:'15px',
-        borderRadius:'5px',
-        display:'block',
-        maxWidth:'max-content',
-        margin:'5px 0'
-    }}> {order?.orderStatus === 'Proccessing' ? 'On the Way':'Delevered'} </p>
- 
+<Card key={product?._id} style={{marginBottom:'15px'}}>
+<Text type="success">Ordered On {format(new Date(order?.createdAt), "MM/dd/yyyy")}</Text>
+<Flex>
 
-</CartDes>
+<Image image={product?.image?.[0]?.url} width={'160px'} height={'160px'}/>
 
-</CartWrapper>
+<div style={{marginLeft:'15px'}}>
+<Title level={5} style={{marginTop:'5px'}}>{product.name}</Title>
+<Text type="secondary">{product?.description}</Text>
+<Title level={5} style={{marginTop:'5px'}}>Rp. {product?.price}</Title>
+<Text type={order?.orderStatus !== 'Proccessing'?'success':'warning'}>Order Status: {order?.orderStatus !== 'Proccessing'?'Delevered':'On the way'}</Text>
+</div> 
+
+</Flex>
+
+
+</Card>
 
 
     ))}

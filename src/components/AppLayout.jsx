@@ -18,6 +18,7 @@ const Main = styled.main`
   grid-column-start: 2;
   display: flex;
   flex-direction: column;
+  overflow-y:auto;
 `;
 
 const StyledOutlet = styled.div`

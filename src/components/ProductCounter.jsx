@@ -5,6 +5,7 @@ import useSelection from 'antd/es/table/hooks/useSelection';
 import { decreaseQuantity, getQuantityByID, increaseQuantity } from '../store/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { Button } from 'antd';
 
 const ItemCount = styled.span`
     font-size:15px;
@@ -34,9 +35,13 @@ const ProductCounter = ({item}) => {
   return (
     <>
     <CounterWrapper >
-    <MdAddCircleOutline onClick={()=>handleInc(item._id)}/>
+    
+    <Button type="primary" icon={<MdAddCircleOutline />} shape="circle" onClick={()=>handleInc(item._id)}>
+      </Button>
     <ItemCount>{quantity}</ItemCount>
-    <GrSubtractCircle  onClick={()=>handleDec(item._id)}/>
+    <Button type="primary" icon={<GrSubtractCircle/>} shape="circle" onClick={()=>handleDec(item._id)}>
+        </Button>
+        
     </CounterWrapper>
     </>
   )

@@ -6,10 +6,11 @@ import PriceDetail from './PriceDetail'
 import EmptyCart from './EmptyCart'
 import Address from './Address'
 import { ContextProvider } from '../context/payContext'
+import { Button, Flex } from 'antd'
 const CartWrapper = styled.div`
     display: grid;
     width: 100%;
-    gap:10px;
+    gap:15px;
     grid-template-columns:2fr 1fr;
 `
 const Offer = styled.div`
@@ -22,6 +23,7 @@ const Offer = styled.div`
 const OfferDes = styled.p`
    margin-bottom:5px; 
 `
+const btnStyle = {color:'green', width:'max-content',pointerEvents:'none',marginBottom:'5px'}
 const Cart = () => {
   const [hideOrderDetails, setHideOrderDetails] = useState(false)
   const [totalPrice, settotalPrice] = useState(null)
@@ -41,8 +43,12 @@ const Cart = () => {
    <CartWrapper>
    { !hideOrderDetails &&
     <div>
-      <Offer>Offer Code HYD10</Offer>
-      <OfferDes>Use Code to get 10% off on minimum purchase of Rs. 10000</OfferDes>
+      
+      <Flex vertical style={{marginBottom:'15px'}}>
+      <Button style={btnStyle} type="dashed">Offer Code HYD10</Button>
+      <Button style={btnStyle} type="dashed">Use Code to get 10% off on minimum purchase of Rs. 10000</Button>
+      </Flex>
+       
     {products && products.map(ele => (
     <CartItem key={ele._id} product={ele}/>
      ))}

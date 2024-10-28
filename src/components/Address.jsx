@@ -1,4 +1,4 @@
-import { Steps } from 'antd';
+import { Button, Card, Flex, Steps } from 'antd';
 import { useAddress } from '../features/authentication/useLogin';
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
@@ -7,10 +7,8 @@ import toast from 'react-hot-toast';
 import { MyContext } from '../context/payContext';
 import { useMakeOrder } from '../features/orders/useOrder';
 import { useSelector } from 'react-redux';
-
-const HomeAdd = [
-  'Friends Mens Pg, Opp. Apama Shangi-la Street, No.3, Ploat No. 22, Padmasree Gardens, Gowlidoddy, Gachibowli, Hyderabad, TELANGANA - 50032 India.',
-];
+import { Typography } from 'antd';
+const { Text } = Typography;
 
 const AddressWrapper = styled.p`
   font-size: 14px;
@@ -59,13 +57,12 @@ const Address = ({totalPrice}) => {
   // @ts-ignore
   const products = useSelector(state=>state.cart);
 
-  const {user} = data
   
   const handleClick = () => {
     // Add functionality here
     setStep(2)
     setshowAddress(false)
-    setaddress(user?.addressInfo)
+    setaddress(data?.user?.addressInfo)
   };
   const handlePay = ()=>{
     setStep(2)
@@ -92,10 +89,10 @@ console.log(isError);
     return <Spinner/>
   }
   return (
-    <Wrapper>
+    <Card style={{height:'max-content'}}>
       <Steps
         style={{
-          marginBottom: '10px',
+          marginBottom: '15px',
         }}
         size="small"
         current={step}
@@ -113,27 +110,25 @@ console.log(isError);
       />
 
        {showAddress && <div>
-        <Home>Home</Home>
-            {/* {HomeAdd.map((add, index) => (
-                <AddressWrapper key={index}>{add}</AddressWrapper> // Add unique key
-            ))}
-            <p>Mobile no.: 88XXXXXX16</p> */}
-             <AddressWrapper>
-             <span>{user?.addressInfo?.address}</span>,
-            <span>{user?.addressInfo?.city}</span>,
-            <span>{user?.addressInfo?.state}</span>,
-            <span>{user?.addressInfo?.country}</span>,
-            <span>{user?.addressInfo?.pincode}</span>
-             </AddressWrapper>
-         
-            <p>phone no :{user?.addressInfo?.phoneNumber}</p>
-            <SuccessBtn onClick={handleClick}>Use This Address</SuccessBtn>
+        <Flex vertical>
+        <Button color="danger" variant="dashed" style={{width:'max-content'}}>
+          Home
+          </Button>
+             <Text type="secondary" style={{marginTop:'15px'}}>{data?.user?.addressInfo?.address} {data?.user?.addressInfo?.city} {data?.user?.addressInfo?.state},
+             {data?.user?.addressInfo?.country}, {data?.user?.addressInfo?.pincode}</Text>
+        </Flex>
+
+        <Typography.Title  level={5} style={{marginTop:'15px'}}>
+          Phone no :{data?.user?.addressInfo?.phoneNumber}
+        </Typography.Title>
+
+             <Button type="primary" style={{marginTop:'15px'}} onClick={handleClick}>Use This Address</Button>
         </div>}
       {!showAddress && <div>
         <p>Payment Gateway</p>
-        <SuccessBtn onClick={handlePay}>Pay {totalPrice} </SuccessBtn>
+         <Button type="primary" style={{marginTop:'15px'}} onClick={handlePay}>Pay {totalPrice} </Button>
         </div>}
-    </Wrapper>
+    </Card>
   );
 };
 
