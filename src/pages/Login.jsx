@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <LoginWrapper> 
         <Card >
-   <Heading as="h4" style={{marginBottom:'25px'
+   <Heading as="h4" style={{marginBottom:'25px',textAlign:'center',color:'#000'
    }}>{`${isRegister ? 'Register Here': 'Welcome Back'}`}</Heading>
      {isRegister == false && <LoginLayout/>}
      {isRegister == true && <ResgisterUser/>}
