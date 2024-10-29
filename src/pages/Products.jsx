@@ -4,6 +4,7 @@ import Spinner from '../components/Spinner'
 import { useFetchProducts } from '../features/products/useProducts'
 import React from 'react'
 import Heading from '../components/Heading'
+import Loader from '../components/Loader'
 
 const StyledContainer = styled.ul`
     display: grid;
@@ -13,8 +14,9 @@ const StyledContainer = styled.ul`
 
 const Products = () => {
    const {data , isError, isLoading } =  useFetchProducts()
+   
    if (isLoading) {
-       return <Spinner />;
+       return<Loader content={'Loading....'}/>;
     }
     const products = data?.products
   return (

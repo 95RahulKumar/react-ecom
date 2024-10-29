@@ -8,6 +8,7 @@ import { MyContext } from '../context/payContext';
 import { useMakeOrder } from '../features/orders/useOrder';
 import { useSelector } from 'react-redux';
 import { Typography } from 'antd';
+import Loader from './Loader';
 const { Text } = Typography;
 
 const AddressWrapper = styled.p`
@@ -50,14 +51,16 @@ const SuccessBtn = styled.button`
 const Address = ({totalPrice}) => {
   const [step, setStep] = useState(1); // Move useState inside the component
   const [showAddress, setshowAddress] = useState(true)
-  const {isLoading, isError, data, error} = useAddress();
-  const  {order, loading} = useMakeOrder()
+  const {isLoading:addressLoader, isError, data, error} = useAddress();
+  const  {order, loading:placeOrderLoader} = useMakeOrder()
   const [address, setaddress] = useState({})
   const {setpay} = useContext(MyContext)
   // @ts-ignore
   const products = useSelector(state=>state.cart);
 
-  
+  if(addressLoader || placeOrderLoader){
+    return <Loader content={'Loading....'}/>
+  }
   const handleClick = () => {
     // Add functionality here
     setStep(2)
@@ -80,13 +83,9 @@ const Address = ({totalPrice}) => {
       orderItems: products
     })
   }
-console.log(isError);
 
   if(isError){
     toast.error(error['message']);
-  }
-  if(isLoading){
-    return <Spinner/>
   }
   return (
     <Card style={{height:'max-content'}}>

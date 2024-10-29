@@ -19,6 +19,7 @@ import {
   Upload,
 } from 'antd';
 import { useCreateProduct } from '../features/products/useProducts';
+import Loader from './Loader';
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
@@ -37,17 +38,17 @@ const CreateProduct = () => {
     if (Array.isArray(e)) {
       return e;
     }
-    console.log( e?.fileList)
     return e?.fileList;
   }
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.error('Failed:', errorInfo);
   };
 
   if(isLoading){
-    return
+    return <Loader content={'Loading....'}/>
   }
+  
   return (
     <>
      <Card title="Create product"  >

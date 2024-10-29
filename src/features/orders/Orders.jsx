@@ -6,12 +6,14 @@ import ErrorFallback from '../../components/ErrorFallback'
 import Order from '../../components/Order'
 import styled from 'styled-components'
 import Heading from '../../components/Heading'
+import Loader from '../../components/Loader'
 const Orders = () => {
   const {data , isError, isLoading,error} = useOrder();
 
   const orders = data?.orders || [];
+  
  if(isLoading){
-  return <Spinner />;
+  return  <Loader content={'Loading....'}/>;
  }
  
  if(isError){
