@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import GlobalStyles from './styles/GlobalStyles'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
@@ -13,9 +13,12 @@ import Products from './pages/Products'
 import ProductsLayout from './features/products/ProductsLayout'
 import CartLayout from './features/cart/CartLayout'
 import ProductDetails from './components/ProductDetails'
+import Notification from './components/Notification'
 import Orders from './features/orders/Orders'
 import CreateOrder from './components/CreateProduct'
 import CreateProduct from './components/CreateProduct'
+import { socket } from '../socket';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,8 +27,41 @@ const queryClient = new QueryClient({
   },
 })
 
+
+
+
 function App() {
  
+
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [fooEvents, setFooEvents] = useState([]);
+
+  useEffect(() => {
+    function onConnect() {
+      console.log('socket Connected....')
+      setIsConnected(true);
+    }
+  
+    function onDisconnect() {
+      console.log('socket onnected....')
+      setIsConnected(false);
+    }
+  
+    function onFooEvent(value) {
+      setFooEvents(previous => [...previous, value]);
+    }
+  
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('foo', onFooEvent);
+  
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('foo', onFooEvent);
+    };
+  }, []);
+  
   return (
     <>
      <QueryClientProvider client={queryClient}>
@@ -45,6 +81,7 @@ function App() {
       <Route path='orders' element={<Orders/>}></Route>
       <Route path='products/:id' element={<ProductDetails/>}></Route>
       <Route path='create' element={<CreateProduct/>}></Route>
+      <Route path='notification' element={<Notification/>}></Route>
       </Route>  
       <Route path='login' element={<Login/>}></Route>
       <Route path="*" element={<PageNotFound/>}></Route>

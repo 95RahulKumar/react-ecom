@@ -1,7 +1,7 @@
 import { getItem } from "../utils/healper";
 
-export async function products() {
-    const data = await fetch('http://localhost:3000/api/products', {
+export async function products(option) {
+    const data = await fetch(`http://localhost:3000/api/products?keyword=${option}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Set the content type to JSON

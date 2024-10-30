@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { MdBookmarkBorder } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { HomeOutlined, ProductOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { IoMdNotificationsOutline } from "react-icons/io";
 
 const StyledNav = styled.nav`
     width:100%;
@@ -88,6 +89,12 @@ const MainNav = () => {
         <StyledNavLink to="/create">
         <IoCreateOutline />
           <span>Create Products</span>
+        </StyledNavLink>
+      </li>
+      <li>
+        <StyledNavLink to="/notification">
+        <IoMdNotificationsOutline />
+          <span>Notification</span>
         </StyledNavLink>
       </li>
     </NavList>

@@ -11,6 +11,7 @@ import { add, getQuantityByID } from '../store/cartSlice';
 import { BsCartPlus } from "react-icons/bs";
 import { IoCart } from "react-icons/io5";
 import { Typography } from 'antd';
+import Loader from './Loader'
 
 const { Text,Title } = Typography;
 
@@ -49,7 +50,7 @@ const ProductDetails = () => {
    const dispatch = useDispatch();
 
    if(isLoading){
-    return <Spinner/>
+    return <Loader content={'Loading....'}/>;
    }
   const {product} = data;
   const productObj = product?.[0] 
